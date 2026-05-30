@@ -17,8 +17,8 @@ pasta, mas todos rodam sobre a **mesma** infraestrutura Docker
 │   └── README.md
 └── job/
     ├── Selenium_WebDriver_Jenkins/      # Job 1 - Selenium WebDriver + JUnit 5
-    ├── JUnit_Jenkins/                   # Job 2 - JUnit puro (a implementar)
-    └── JMeter_Jenkins_Grafana/          # Job 3 - JMeter + Grafana (a implementar)
+    ├── JUnit_Jenkins/                   # Job 2 - JUnit puro
+    └── JMeter_Jenkins_Grafana/          # Job 3 - JMeter + Grafana
 ```
 
 ## Subir o Jenkins
@@ -35,8 +35,8 @@ Acesse **http://localhost:8080** (usuário `admin`, senha `admin`).
 | # | Job | Status | Documentação |
 |---|-----|--------|--------------|
 | 1 | Selenium WebDriver + Jenkins | Implementado | [README](job/Selenium_WebDriver_Jenkins/README.md) |
-| 2 | JUnit + Jenkins              | A implementar | [pasta](job/JUnit_Jenkins) |
-| 3 | JMeter + Jenkins + Grafana   | A implementar | [pasta](job/JMeter_Jenkins_Grafana) |
+| 2 | JUnit + Jenkins              | Implementado | [README](job/JUnit_Jenkins/README.md) |
+| 3 | JMeter + Jenkins + Grafana   | Implementado | [README](job/JMeter_Jenkins_Grafana/README.md) |
 
 Consulte o [README do Docker](docker/README.md) para detalhes da imagem
 e do `docker-compose` compartilhados.
