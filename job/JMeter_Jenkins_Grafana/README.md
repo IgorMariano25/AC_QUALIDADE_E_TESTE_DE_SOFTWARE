@@ -13,6 +13,15 @@ API HTTP do InfluxDB.
 
 ---
 
+## Demonstração em vídeo
+
+Vídeo da aplicação rodando o job corretamente (pipeline do Jenkins
+executando o JMeter e métricas chegando ao Grafana em tempo real):
+
+[`Jmeter_Jenkins_Grafana.mp4`](Jmeter_Jenkins_Grafana.mp4)
+
+---
+
 ## 1. Arquitetura
 
 ```
@@ -51,6 +60,7 @@ job/JMeter_Jenkins_Grafana/
 ├── Jenkinsfile                                  # Pipeline declarativo
 ├── test-plan.jmx                                # Plano de teste JMeter (+ Backend Listener)
 ├── docker-compose.yml                           # Sobe InfluxDB + Grafana
+├── Jmeter_Jenkins_Grafana.mp4                   # Vídeo demonstrando o job em execução
 ├── README.md                                    # Este arquivo
 └── grafana/
     ├── provisioning/
