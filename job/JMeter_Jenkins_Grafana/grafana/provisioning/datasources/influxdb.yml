@@ -1,0 +1,15 @@
+# Datasource provisionado automaticamente no Grafana.
+# Aponta para o InfluxDB 1.8 (banco "jmeter") na mesma rede Docker.
+apiVersion: 1
+
+datasources:
+  - name: InfluxDB-JMeter
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    database: jmeter
+    isDefault: true
+    editable: true
+    jsonData:
+      dbName: jmeter
+      httpMode: GET

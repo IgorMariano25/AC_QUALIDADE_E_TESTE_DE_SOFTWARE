@@ -1,0 +1,97 @@
+// =====================================================================
+// Pipeline declarativo do job JMeter + Jenkins + Grafana.
+// Executa dentro do contêiner ac-jenkins (JMeter já vem instalado
+// pelo Dockerfile compartilhado em ../../docker).
+//
+// Durante a execução, o Backend Listener do plano de teste envia as
+// métricas em tempo real para o InfluxDB; o Grafana lê esse InfluxDB
+// e exibe os dashboards (stack subida por ./docker-compose.yml).
+// =====================================================================
+pipeline {
+    agent any
+
+    options {
+        timestamps()
+        timeout(time: 20, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
+    parameters {
+        string(name: 'HOST',     defaultValue: 'blazedemo.com', description: 'Host alvo do teste de carga')
+        string(name: 'THREADS',  defaultValue: '10',            description: 'Número de usuários virtuais (threads)')
+        string(name: 'RAMP',     defaultValue: '5',             description: 'Ramp-up em segundos')
+        string(name: 'DURATION', defaultValue: '60',            description: 'Duração do teste em segundos')
+    }
+
+    environment {
+        PROJECT_DIR = 'job/JMeter_Jenkins_Grafana'
+        // URL de escrita do InfluxDB usada pelo Backend Listener.
+        // "influxdb" é o nome do serviço na mesma rede Docker.
+        INFLUX_URL  = 'http://influxdb:8086/write?db=jmeter'
+    }
+
+    stages {
+        stage('Ferramentas') {
+            steps {
+                echo "Projeto: ${PROJECT_DIR}"
+                sh 'java -version && jmeter --version'
+            }
+        }
+
+        stage('Conferir InfluxDB') {
+            steps {
+                // Garante que o InfluxDB está acessível antes de rodar o teste.
+                sh 'curl -sS -o /dev/null -w "InfluxDB ping HTTP %{http_code}\\n" http://influxdb:8086/ping || true'
+            }
+        }
+
+        stage('Teste de Carga JMeter') {
+            steps {
+                dir("${PROJECT_DIR}") {
+                    sh '''
+                        rm -rf results report
+                        mkdir -p results report
+                        jmeter -n \
+                          -t test-plan.jmx \
+                          -l results/results.jtl \
+                          -e -o report \
+                          -Jhost=${HOST} \
+                          -Jthreads=${THREADS} \
+                          -Jramp=${RAMP} \
+                          -Jduration=${DURATION} \
+                          -JinfluxUrl=${INFLUX_URL}
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Relatório HTML nativo do JMeter (dashboard estático do build).
+            publishHTML(target: [
+                allowMissing: true,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: "${PROJECT_DIR}/report",
+                reportFiles: 'index.html',
+                reportName: 'JMeter HTML Report'
+            ])
+
+            // Arquiva o .jtl bruto para download/análise posterior.
+            archiveArtifacts artifacts: "${PROJECT_DIR}/results/*.jtl",
+                             allowEmptyArchive: true
+
+            // Tendência de performance entre builds (plugin "performance").
+            perfReport sourceDataFiles: "${PROJECT_DIR}/results/*.jtl",
+                       errorFailedThreshold: 5,
+                       errorUnstableThreshold: 1
+
+            // Plugin obrigatório da AC: Chuck Norris (step de pipeline).
+            // O EZ Wall é plugin de "view" e já fica em uso ao ser instalado.
+            chuckNorris()
+        }
+        success { echo 'Pipeline JMeter finalizado com SUCESSO. Veja os dashboards no Grafana (http://localhost:3000).' }
+        failure { echo 'Pipeline JMeter FALHOU - verifique o relatório HTML e o .jtl.' }
+    }
+}

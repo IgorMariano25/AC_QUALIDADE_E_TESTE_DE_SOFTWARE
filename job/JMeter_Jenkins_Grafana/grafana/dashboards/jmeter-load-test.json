@@ -1,0 +1,958 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "grafana",
+                    "uid": "-- Grafana --"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
+            }
+        ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 1,
+    "id": null,
+    "links": [],
+    "liveNow": true,
+    "panels": [
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "InfluxDB-JMeter"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "blue",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 6,
+                "x": 0,
+                "y": 0
+            },
+            "id": 1,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "11.2.0",
+            "targets": [
+                {
+                    "alias": "Usuarios Ativos",
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "InfluxDB-JMeter"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "none"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "jmeter",
+                    "policy": "default",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "meanAT"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "transaction",
+                            "operator": "=",
+                            "value": "internal"
+                        }
+                    ]
+                }
+            ],
+            "title": "Usuarios Virtuais Ativos",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "InfluxDB-JMeter"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "reqps"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 6,
+                "x": 6,
+                "y": 0
+            },
+            "id": 2,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "11.2.0",
+            "targets": [
+                {
+                    "alias": "Throughput",
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "InfluxDB-JMeter"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "none"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "jmeter",
+                    "policy": "default",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "count"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "type": "sum"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "transaction",
+                            "operator": "=",
+                            "value": "all"
+                        },
+                        {
+                            "condition": "AND",
+                            "key": "statut",
+                            "operator": "=",
+                            "value": "ok"
+                        }
+                    ]
+                }
+            ],
+            "title": "Throughput (req/s)",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "InfluxDB-JMeter"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 500
+                            },
+                            {
+                                "color": "red",
+                                "value": 1000
+                            }
+                        ]
+                    },
+                    "unit": "ms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 6,
+                "x": 12,
+                "y": 0
+            },
+            "id": 3,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "11.2.0",
+            "targets": [
+                {
+                    "alias": "Tempo medio",
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "InfluxDB-JMeter"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "none"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "jmeter",
+                    "policy": "default",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "avg"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "transaction",
+                            "operator": "=",
+                            "value": "all"
+                        }
+                    ]
+                }
+            ],
+            "title": "Tempo de Resposta Medio",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "InfluxDB-JMeter"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 1
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 6,
+                "x": 18,
+                "y": 0
+            },
+            "id": 4,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "sum"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "11.2.0",
+            "targets": [
+                {
+                    "alias": "Erros",
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "InfluxDB-JMeter"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "none"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "jmeter",
+                    "policy": "default",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "count"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "type": "sum"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "transaction",
+                            "operator": "=",
+                            "value": "all"
+                        },
+                        {
+                            "condition": "AND",
+                            "key": "statut",
+                            "operator": "=",
+                            "value": "ko"
+                        }
+                    ]
+                }
+            ],
+            "title": "Total de Erros",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "InfluxDB-JMeter"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "ms",
+                        "axisPlacement": "auto",
+                        "drawStyle": "line",
+                        "fillOpacity": 10,
+                        "gradientMode": "none",
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "showPoints": "never",
+                        "spanNulls": true
+                    },
+                    "unit": "ms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 0,
+                "y": 5
+            },
+            "id": 5,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "mean",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.2.0",
+            "targets": [
+                {
+                    "alias": "$tag_transaction",
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "InfluxDB-JMeter"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "transaction"
+                            ],
+                            "type": "tag"
+                        },
+                        {
+                            "params": [
+                                "none"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "jmeter",
+                    "policy": "default",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "avg"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "transaction",
+                            "operator": "!=",
+                            "value": "internal"
+                        },
+                        {
+                            "condition": "AND",
+                            "key": "transaction",
+                            "operator": "!=",
+                            "value": "all"
+                        }
+                    ]
+                }
+            ],
+            "title": "Tempo de Resposta por Transacao",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "InfluxDB-JMeter"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "ms",
+                        "axisPlacement": "auto",
+                        "drawStyle": "line",
+                        "fillOpacity": 10,
+                        "gradientMode": "none",
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "showPoints": "never",
+                        "spanNulls": true
+                    },
+                    "unit": "ms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 12,
+                "y": 5
+            },
+            "id": 6,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.2.0",
+            "targets": [
+                {
+                    "alias": "p90",
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "InfluxDB-JMeter"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "none"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "jmeter",
+                    "policy": "default",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "pct90.0"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "transaction",
+                            "operator": "=",
+                            "value": "all"
+                        }
+                    ]
+                },
+                {
+                    "alias": "p95",
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "InfluxDB-JMeter"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "none"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "jmeter",
+                    "policy": "default",
+                    "refId": "B",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "pct95.0"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "transaction",
+                            "operator": "=",
+                            "value": "all"
+                        }
+                    ]
+                },
+                {
+                    "alias": "p99",
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "InfluxDB-JMeter"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "none"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "jmeter",
+                    "policy": "default",
+                    "refId": "C",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "pct99.0"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "transaction",
+                            "operator": "=",
+                            "value": "all"
+                        }
+                    ]
+                }
+            ],
+            "title": "Percentis de Tempo de Resposta (p90 / p95 / p99)",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "InfluxDB-JMeter"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "drawStyle": "bars",
+                        "fillOpacity": 50,
+                        "gradientMode": "none",
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "showPoints": "never",
+                        "spanNulls": false
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 14
+            },
+            "id": 7,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "sum"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.2.0",
+            "targets": [
+                {
+                    "alias": "$tag_statut",
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "InfluxDB-JMeter"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "statut"
+                            ],
+                            "type": "tag"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "jmeter",
+                    "policy": "default",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "count"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "type": "sum"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "transaction",
+                            "operator": "=",
+                            "value": "all"
+                        }
+                    ]
+                }
+            ],
+            "title": "Requisicoes OK vs KO",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "InfluxDB-JMeter"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "usuarios",
+                        "axisPlacement": "auto",
+                        "drawStyle": "line",
+                        "fillOpacity": 20,
+                        "gradientMode": "none",
+                        "lineInterpolation": "stepAfter",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "showPoints": "never",
+                        "spanNulls": true
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 14
+            },
+            "id": 8,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.2.0",
+            "targets": [
+                {
+                    "alias": "Usuarios Ativos",
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "InfluxDB-JMeter"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "none"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "jmeter",
+                    "policy": "default",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "meanAT"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "transaction",
+                            "operator": "=",
+                            "value": "internal"
+                        }
+                    ]
+                }
+            ],
+            "title": "Usuarios Virtuais ao Longo do Tempo",
+            "type": "timeseries"
+        }
+    ],
+    "refresh": "5s",
+    "schemaVersion": 39,
+    "tags": [
+        "jmeter",
+        "performance"
+    ],
+    "templating": {
+        "list": []
+    },
+    "time": {
+        "from": "now-15m",
+        "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "AC - JMeter Load Test",
+    "uid": "ac-jmeter-load",
+    "version": 1,
+    "weekStart": ""
+}

@@ -1,0 +1,14 @@
+# Provider de dashboards: carrega todos os JSON da pasta abaixo.
+apiVersion: 1
+
+providers:
+  - name: 'AC JMeter Dashboards'
+    orgId: 1
+    folder: 'JMeter'
+    type: file
+    disableDeletion: false
+    editable: true
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: false

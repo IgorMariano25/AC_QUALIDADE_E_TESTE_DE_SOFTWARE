@@ -1,0 +1,61 @@
+# =====================================================================
+# Stack de monitoramento do job JMeter + Jenkins + Grafana.
+#
+# Sobe:
+#   - InfluxDB 1.8  -> banco de series temporais que recebe as metricas
+#                      enviadas pelo Backend Listener do JMeter.
+#   - Grafana       -> dashboards que leem o InfluxDB em tempo real.
+#
+# Estes contedores entram na MESMA rede do contedor `ac-jenkins`
+# (criada pelo docker-compose em ../../docker) para que o JMeter,
+# rodando dentro do Jenkins, consiga resolver o host `influxdb`.
+#
+# >>> Suba PRIMEIRO o Jenkins (em ../../docker) e SO DEPOIS esta stack. <<<
+# =====================================================================
+services:
+  influxdb:
+    image: influxdb:1.8
+    container_name: ac-influxdb
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    environment:
+      # Cria automaticamente o banco "jmeter" no primeiro boot.
+      INFLUXDB_DB: jmeter
+      INFLUXDB_HTTP_AUTH_ENABLED: "false"
+    volumes:
+      - influxdb_data:/var/lib/influxdb
+    networks:
+      - jenkins_net
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: ac-grafana
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      # Provisionamento automatico: datasource + dashboard ja prontos.
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    networks:
+      - jenkins_net
+
+volumes:
+  influxdb_data:
+  grafana_data:
+
+networks:
+  # Rede criada pelo docker-compose do Jenkins (../../docker).
+  # O nome padrao do projeto Compose e o nome da pasta -> "docker",
+  # entao a rede default vira "docker_default".
+  jenkins_net:
+    external: true
+    name: docker_default
