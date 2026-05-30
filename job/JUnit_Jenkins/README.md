@@ -136,3 +136,14 @@ A mesma imagem `ac-jenkins` é usada pelos outros jobs da AC:
 - `job/Selenium_WebDriver_Jenkins/` - teste de UI com Selenium WebDriver.
 - `job/JMeter_Jenkins_Grafana/` - testes de carga com JMeter +
   dashboard no Grafana.
+
+---
+
+## 8. Vídeo de demonstração
+
+O vídeo de demonstração mostra este job sendo **executado de ponta a ponta**
+no Jenkins e **funcionando corretamente**: o disparo do build, as etapas do
+pipeline (checkout, build e testes JUnit), os testes unitários passando e a
+publicação do relatório JUnit, comprovando que o job roda como esperado.
+
+📹 **Assista à demonstração:** [JUnit + Jenkins - execução do job](JUnit_Jenkins.mp4)
