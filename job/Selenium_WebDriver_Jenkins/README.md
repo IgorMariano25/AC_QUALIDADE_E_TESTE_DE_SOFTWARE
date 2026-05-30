@@ -8,17 +8,20 @@ por um pipeline declarativo do **Jenkins** rodando em **Docker**.
 
 ## 1. O que este job faz
 
-1. O Jenkins (contêiner `ac-jenkins`) recebe o repositório montado em
-   `/workspace` por um volume do `docker-compose`.
-2. O `Jenkinsfile` entra na pasta deste job, roda `mvn clean test`.
+1. O Jenkins (contêiner `ac-jenkins`) clona este repositório na workspace
+   do build (passo *Checkout SCM*).
+2. O `Jenkinsfile` entra na pasta deste job e roda `mvn clean test`.
 3. O teste [`DuckDuckGoSearchTest`](src/test/java/br/edu/ac/selenium/DuckDuckGoSearchTest.java)
    abre o Chrome em modo **headless**, pesquisa "Selenium WebDriver"
    no DuckDuckGo e valida que o título da página contém "selenium".
 4. O relatório JUnit gerado em `target/surefire-reports/*.xml` é
    publicado na aba **Test Result** do build no Jenkins.
-5. Os plugins **Chuck Norris** e **EZ Wall** são
-   chamados no bloco `post { always { ... } }` do `Jenkinsfile` e
-   aparecem na página de cada build.
+5. Plugins obrigatórios da AC:
+   - **Chuck Norris** - chamado como step `chuckNorris()` no bloco
+     `post { always { ... } }`, exibindo uma "fact" em cada build.
+   - **EZ Wall** - é um plugin de *view* (mural/wall display). Ele **não**
+     tem step de pipeline: assim que instalado, adiciona automaticamente
+     o link de wall display a cada build/job, então já fica "em uso".
 
 ```
 job/Selenium_WebDriver_Jenkins/

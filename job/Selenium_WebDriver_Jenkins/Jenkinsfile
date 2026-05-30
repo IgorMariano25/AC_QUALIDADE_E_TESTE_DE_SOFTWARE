@@ -13,14 +13,15 @@ pipeline {
     }
 
     environment {
-        // Diretório do projeto Maven dentro do contêiner.
-        PROJECT_DIR = '/workspace/job/Selenium_WebDriver_Jenkins'
+        // Caminho do projeto Maven RELATIVO ao workspace do Jenkins
+        // (o repositório é clonado pelo "Checkout SCM" para a workspace).
+        PROJECT_DIR = 'job/Selenium_WebDriver_Jenkins'
     }
 
     stages {
-        stage('Checkout') {
+        stage('Ferramentas') {
             steps {
-                echo "Usando o código já montado em ${PROJECT_DIR}"
+                echo "Projeto: ${PROJECT_DIR}"
                 sh 'java -version && mvn -version && google-chrome --version'
             }
         }
@@ -44,13 +45,15 @@ pipeline {
 
     post {
         always {
-            // Publica o relatório JUnit no Jenkins
-            junit testResults: 'job/Selenium_WebDriver_Jenkins/target/surefire-reports/*.xml',
+            // Publica o relatório JUnit (gerado pelo checkout do SCM nesta workspace)
+            junit testResults: "${PROJECT_DIR}/target/surefire-reports/*.xml",
                   allowEmptyResults: true
 
-            // Publishers obrigatórios da AC: Chuck Norris + EZ Wall
-            chucknorris()
-            ezwall()
+            // Plugin obrigatório da AC: Chuck Norris (step de pipeline).
+            // O EZ Wall NÃO tem step de pipeline: ele é um plugin de "view"
+            // que adiciona automaticamente o link de wall display a cada
+            // build assim que instalado, então já está "em uso" no job.
+            chuckNorris()
         }
         success { echo 'Pipeline Selenium finalizado com SUCESSO.' }
         failure { echo 'Pipeline Selenium FALHOU - verifique o relatório JUnit.' }
