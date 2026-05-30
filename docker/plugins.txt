@@ -1,0 +1,12 @@
+workflow-aggregator
+git
+pipeline-stage-view
+junit
+htmlpublisher
+timestamper
+ws-cleanup
+configuration-as-code
+blueocean
+performance
+chucknorris
+ezwall

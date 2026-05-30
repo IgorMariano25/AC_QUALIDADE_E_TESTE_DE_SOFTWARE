@@ -1,0 +1,31 @@
+# =====================================================================
+# docker-compose compartilhado pelos 3 jobs.
+# Sobe um Jenkins com Maven, Chrome (Selenium) e JMeter já instalados.
+# Os repositórios dos jobs ficam montados em /workspace dentro do
+# contêiner para que o Jenkins possa apontar os pipelines para eles.
+# =====================================================================
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ac-jenkins:latest
+    container_name: ac-jenkins
+    restart: unless-stopped
+    ports:
+      - "8080:8080"   # UI do Jenkins
+      - "50000:50000" # porta dos agentes JNLP
+    environment:
+      # Credenciais do admin criadas automaticamente (JCasC).
+      JENKINS_ADMIN_ID: admin
+      JENKINS_ADMIN_PASSWORD: admin
+      CASC_JENKINS_CONFIG: /var/jenkins_home/casc.yaml
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - ./casc.yaml:/var/jenkins_home/casc.yaml:ro
+      # Monta o repositório inteiro dentro do contêiner para que
+      # qualquer job possa apontar para /workspace/job/<nome-do-job>
+      - ../:/workspace:rw
+
+volumes:
+  jenkins_home:

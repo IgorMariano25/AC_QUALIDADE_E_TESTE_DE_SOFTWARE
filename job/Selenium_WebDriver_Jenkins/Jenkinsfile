@@ -1,0 +1,58 @@
+// =====================================================================
+// Pipeline declarativo do job Selenium WebDriver + Jenkins.
+// Executa dentro do próprio contêiner ac-jenkins (Maven + Chrome
+// já vêm instalados pelo Dockerfile compartilhado em ../../docker).
+// =====================================================================
+pipeline {
+    agent any
+
+    options {
+        timestamps()
+        timeout(time: 15, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
+    environment {
+        // Diretório do projeto Maven dentro do contêiner.
+        PROJECT_DIR = '/workspace/job/Selenium_WebDriver_Jenkins'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo "Usando o código já montado em ${PROJECT_DIR}"
+                sh 'java -version && mvn -version && google-chrome --version'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir("${PROJECT_DIR}") {
+                    sh 'mvn -B -ntp clean compile test-compile'
+                }
+            }
+        }
+
+        stage('Testes Selenium') {
+            steps {
+                dir("${PROJECT_DIR}") {
+                    sh 'mvn -B -ntp test'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Publica o relatório JUnit no Jenkins
+            junit testResults: 'job/Selenium_WebDriver_Jenkins/target/surefire-reports/*.xml',
+                  allowEmptyResults: true
+
+            // Publishers obrigatórios da AC: Chuck Norris + EZ Wall
+            chucknorris()
+            ezwall()
+        }
+        success { echo 'Pipeline Selenium finalizado com SUCESSO.' }
+        failure { echo 'Pipeline Selenium FALHOU - verifique o relatório JUnit.' }
+    }
+}
