@@ -33,8 +33,7 @@
                     </elementProp>
                     <elementProp name="INFLUX_URL" elementType="Argument">
                         <stringProp name="Argument.name">INFLUX_URL</stringProp>
-                        <stringProp name="Argument.value">
-                            ${__P(influxUrl,http://influxdb:8086/write?db=jmeter)}</stringProp>
+                        <stringProp name="Argument.value">${__P(influxUrl,http://influxdb:8086/write?db=jmeter)}</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                 </collectionProp>
@@ -124,8 +123,7 @@
                         <collectionProp name="Arguments.arguments">
                             <elementProp name="influxdbMetricsSender" elementType="Argument">
                                 <stringProp name="Argument.name">influxdbMetricsSender</stringProp>
-                                <stringProp name="Argument.value">
-                                    org.apache.jmeter.visualizers.backend.influxdb.HttpMetricsSender</stringProp>
+                                <stringProp name="Argument.value">org.apache.jmeter.visualizers.backend.influxdb.HttpMetricsSender</stringProp>
                                 <stringProp name="Argument.metadata">=</stringProp>
                             </elementProp>
                             <elementProp name="influxdbUrl" elementType="Argument">
@@ -170,8 +168,7 @@
                             </elementProp>
                         </collectionProp>
                     </elementProp>
-                    <stringProp name="classname">
-                        org.apache.jmeter.visualizers.backend.influxdb.InfluxdbBackendListenerClient</stringProp>
+                    <stringProp name="classname">org.apache.jmeter.visualizers.backend.influxdb.InfluxdbBackendListenerClient</stringProp>
                 </BackendListener>
                 <hashTree />
             </hashTree>
